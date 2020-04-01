@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mot de passe oublié{% endblock %}
+
+{% block body %}
+    <section class="container mt-5 mb-5">
+        <form method="post" class="mx-auto col-md-5">
+
+            <h1 class="h3 mb-3 font-weight-normal">Mot de passe oublié</h1>
+            <label for="inputEmail" class="sr-only">Email</label>
+            <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+
+            <button class="btn btn-dark mt-5" type="submit">Envoyer</button>
+
+        </form>
+    </section>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SnowTricks - {{ trick.name }}{% endblock %}
+
+{% block body %}
+
+    <div id="trickMainImage" class="position-relative border border-dark">
+        <img class="w-100" src="{{ asset(trick.mainImage.pathCropped ~ '/' ~ trick.mainImage.name) }}" alt="{{ trick.mainImage.caption }}">
+        <div id="trickTitle" class="text-center">
+            <h1>{{ trick.name }}</h1>
+        </div>
+        {% if app.user %}
+        <div class="operations">
+            <a href="{{ path('trick_edit', {'slug': trick.slug}) }}"><i class="fas fa-pencil-alt"></i></a>
+            <a href="{{ path('trick_delete', {'slug': trick.slug}) }}" onclick="return confirm(`Êtes-vous sûr de vouloir supprimer le trick : {{trick.name}} ?`)"><i class="fas fa-trash-alt"></i></a>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="row" id="trickMedia">
+    {% for image in trick.images %}
+        <div class="trickImage mx-auto col-sm-6 col-md-4 col-lg-4 col-xl-3 border border-dark">
+            <img src="{{ asset(image.pathThumbnail ~ '/' ~ image.name) }}" width="100%" alt="{{ image.caption }}">
+        </div>
+    {% endfor %}
+    {% for video in trick.videos %}
+        <div class="trickVideo col-sm-6 col-md-4 col-lg-4 col-xl-3 border border-dark">
+            <iframe id="video{{ video.id }}" width="100%" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <script>
+            var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            var url = "{{ video.url }}";
+            var match = url.match(regExp);
+            if (match && match[2].length == 11) 
+            {
+                var id = match[2];
+                var embedlink = "http://www.youtube.com/embed/" + id;
+                var iframe = document.getElementById("video{{ video.id }}");
+                iframe.src = embedlink;
+            }
+        </script>
+    {% endfor %}
+    </div>
+
+<div class="row text-center" id="seeMedia">
+        <button class="btn btn-info col-10 mt-3">Voir les médias</button>
+    </div>
+    
+    <div class="row">
+        <div id="trickDescription" class="col-11 mx-auto mt-4 mb-1 bg-light">
+            <h3>Description :</h3>
+            {{ trick.description | raw }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="row text-center col-11 mx-auto my-2 bg-light" id="infos">
+            <p class="col">Publié le {{ trick.createdAt | date('d/m/Y') }} à {{ trick.createdAt | date('H:i') }} par {{ trick.user.username }}</p>
+            <p class="col">Mis à jour le {{ trick.updatedAt | date('d/m/Y') }} à {{ trick.updatedAt | date('H:i') }}</p>
+            <p class="col">Catégorie : {{ trick.category.name }}</p>
+        </div>
+    </div>
+
+    <hr>
+    
+    <section id="comments">
+    {% for comment in trick.comments | slice(0,5) %}
+        <div class="comment row mx-auto">
+            <div class="col-md-10 col-12 mx-auto row">
+                <div class="userImage col-lg-2 col-4">
+                    <img src="{{ asset(comment.user.imagePath ~ '/' ~ comment.user.imageName) }}" class="avatar avatar-medium" alt="comment.user.username">
+                </div>
+                <p class="col-lg-10 col-8 bg-light">
+                    <strong>{{ comment.user.username }}</strong> <small class="text-muted">({{ comment.createdAt | date('d/m/Y à H:i') }}) :</small>
+                    <br>{{ comment.content }}
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+    </section>
+    <div class="row text-center">
+        <button id="loadMoreComments" class="btn btn-primary col-md-6 col-8 mx-auto">Voir plus de commentaires</button>
+    </div>
+
+{% endblock %}
