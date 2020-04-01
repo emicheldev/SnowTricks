@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title "S'inscrire" %}
+
+{% block body %}
+	<div class="container container-form mt-4 text-center">
+		<h1>
+			S'inscrire
+		</h1>
+		{% if error is defined %}
+			<div class="alert alert-danger">
+				{{ error.messageKey | trans(error.messagedata, 'security') }}
+			</div>
+		{% endif %}
+
+
+		{{ form_start(form) }}
+		<div class="row">
+			<div class="col">
+				{{ form_row(form.username) }}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				{{ form_row(form.email) }}
+			</div>
+		</div>
+		<div class="row"> 
+			<div class="col">
+				{{ form_row(form.password) }}
+			</div>
+		</div>
+		<div class="actions">
+			<button class="border-lg bg-blue-200 m-3 ">
+				{{ button|default('Créer mon compte') }}
+			</button>
+			<a href="{{ path('auth_login') }}">Vous avez déja un compte ?</a>
+		</div>
+		{{ form_end(form) }}
+	</div>
+{% endblock %}
