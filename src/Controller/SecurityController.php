@@ -67,7 +67,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-	 * @Route("/register", name="register")
+	 * @Route("/register", name="user_register")
 	 */
 	public function register(Request $request, MailerInterface $mailer)
 	{
