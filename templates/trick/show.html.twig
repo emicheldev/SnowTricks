@@ -5,7 +5,7 @@
 {% block body %}
 
     <div id="trickMainImage" class="position-relative border border-dark">
-        <img class="w-100" src="{{ asset(trick.mainImage.pathCropped ~ '/' ~ trick.mainImage.name) }}" alt="{{ trick.mainImage.caption }}">
+        <img class="w-100" src="{# asset(trick.mainImage.pathCropped ~ '/' ~ trick.mainImage.name) #}" alt="{{ trick.mainImage }}">
         <div id="trickTitle" class="text-center">
             <h1>{{ trick.name }}</h1>
         </div>
@@ -20,7 +20,7 @@
     <div class="row" id="trickMedia">
     {% for image in trick.images %}
         <div class="trickImage mx-auto col-sm-6 col-md-4 col-lg-4 col-xl-3 border border-dark">
-            <img src="{{ asset(image.pathThumbnail ~ '/' ~ image.name) }}" width="100%" alt="{{ image.caption }}">
+            <img src="{# asset(image.pathThumbnail ~ '/' ~ image.name) #}" width="100%" alt="{{ image }}">
         </div>
     {% endfor %}
     {% for video in trick.videos %}
