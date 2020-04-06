@@ -77,7 +77,7 @@ class TrickController extends AbstractController
                 'Votre commentaire a bien été enregistré !'
             );
 
-            return $this->redirectToRoute('trick_show', [
+            return $this->redirectToRoute('trick_trick', [
                 'slug' => $trick->getSlug()
             ]);
         }
@@ -180,6 +180,48 @@ class TrickController extends AbstractController
 
         return $this->redirectToRoute('home');
     }
+
+    /**
+     * @Route("/trick/edit/{slug}", name="trick_edit")
+     * @IsGranted("ROLE_USER")
+     */
+    public function edit(Request $request, TrickRepository $repo, EntityManagerInterface $manager, $slug)
+    {
+        $trick = $repo->findOneBySlug($slug);
+        
+        $form = $this->createForm(TrickType::class, $trick);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            foreach($trick->getImages() as $image)
+            {
+                $image->setTrick($trick);
+                $manager->persist($image);
+            }
+
+            $trick->setUpdatedAt(new \DateTime());
+
+            $manager->persist($trick);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Le trick <strong>' . $trick->getName() . '</strong> a bien été modifié !'
+            );
+
+            return $this->redirectToRoute('trick_trick', [
+                'slug' => $trick->getSlug()
+            ]);
+        }
+
+        return $this->render('trick/edit.html.twig', [
+            'form' => $form->createView(),
+            'trick' => $trick
+        ]);
+    }
+
 
 
 
