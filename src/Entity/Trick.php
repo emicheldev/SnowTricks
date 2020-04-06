@@ -85,7 +85,8 @@ class Trick
     private $comments;
 
     /**
-     * Column(type="string", length=255, nullable=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
+     * @Assert\Valid()
      */
     private $mainImage;
 

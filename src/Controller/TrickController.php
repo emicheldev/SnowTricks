@@ -8,13 +8,16 @@ use App\Entity\Trick;
 use App\Entity\Comment;
 use App\Form\TrickType;
 use App\Form\CommentFormType;
-use App\Repository\TrickRepository;
+use Doctrine\ORM\EntityManager;
 use App\Services\PicturesUploader;
+use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
@@ -86,7 +89,7 @@ class TrickController extends AbstractController
     }
 
       /**
-     * @Route("/addtricks", name="add_tricks")
+     * @Route("/trick/add", name="add_tricks")
      * @param Request $request
      * @param PicturesUploader $uploadImage
      * @param Security $username
@@ -148,6 +151,37 @@ class TrickController extends AbstractController
 
         return $this->redirectToRoute('home');
     }
+
+
+    /**
+     * @Route("/trick/delete/{slug}", name="trick_delete")
+     * @IsGranted("ROLE_USER")
+     */
+    public function delete(TrickRepository $repo, EntityManagerInterface $manager, $slug)
+    {
+        $trick = $repo->findOneBySlug($slug);
+
+        $fileSystem = new Filesystem();
+
+        foreach($trick->getImages() as $image)
+        {
+            $fileSystem->remove($image->getPath() . '/' . $image->getName());
+            $fileSystem->remove($image->getPath() . '/cropped/' . $image->getName());
+            $fileSystem->remove($image->getPath() . '/thumbnail/' . $image->getName());
+        }
+
+        $manager->remove($trick);
+        $manager->flush();
+
+        $this->addflash(
+            'success',
+            "Le trick {$trick->getName()} a été supprimé avec succès !"
+        );
+
+        return $this->redirectToRoute('home');
+    }
+
+
 
 
 }
