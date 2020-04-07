@@ -1,28 +1,31 @@
-
 <?php
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\Entity\Picture;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
-class ResetPasswordUserType extends AbstractType
+class PictureType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
-			->add('email')
-			->add('password', PasswordType::class);
+			->add('imageFile', FileType::class, [
+				'required' => true,
+				'multiple' => false,
+			]);
 	}
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
 		$resolver->setDefaults([
-			'data_class' => User::class,
-			'validation_groups' => false,
+			'data_class' => Picture::class,
+			'translation_domain' => 'forms'
 		]);
 	}
 }
