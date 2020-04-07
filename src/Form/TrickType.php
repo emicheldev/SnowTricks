@@ -8,13 +8,10 @@ use App\Form\LabelType;
 use App\Form\VideoType;
 use App\Entity\Category;
 use PhpParser\Parser\Multiple;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
@@ -32,16 +29,18 @@ class TrickType extends LabelType
         ->add('mainImage', ImageType::class, $this->getOptions('Image principale', 'Image principale'))
         ->add('images', CollectionType::class, [
             'entry_type' => ImageType::class,
-            'allow_add' => true,
-            'allow_delete' => true,
-            'by_reference' => false
+            'entry_options' => ['label' => false],
+                'required' => false,
+                'allow_add'     => true,
+                'allow_delete'  => true,
+                'by_reference'  => false
             
         ])
         ->add('videos', CollectionType::class, [
             'entry_type' => VideoType::class,
+            'entry_options' => ['label' => false],
             'allow_add' => true,
-            'allow_delete' => true,
-            'by_reference' => false
+            'allow_delete' => true
         ])
     ;
     }
