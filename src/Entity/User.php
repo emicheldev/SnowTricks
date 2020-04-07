@@ -2,372 +2,240 @@
 
 namespace App\Entity;
 
-use App\Entity\Trick;
-use App\Entity\Comment;
+use Serializable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(
- *  fields={"username"},
- *  message="Ce nom d'utilisateur est déjà utilisé"
- * )
- * @UniqueEntity(
- *  fields={"email"},
- *  message="Cet email est déjà utilisé"
- * )
+ * @UniqueEntity("username")
+ * @UniqueEntity("email")
  */
 class User implements UserInterface, \Serializable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+	/**
+	 * @ORM\Id()
+	 * @ORM\GeneratedValue()
+	 * @ORM\Column(type="integer")
+	 */
+	private $id;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     * @Assert\NotBlank(message="Veuillez renseigner un nom d'utilisateur")
-     * @Assert\Length(max=50, maxMessage="Votre nom d'utilisateur ne doit pas dépasser 50 caractères")
-     */
-    private $username;
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 */
+	private $username;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     * @Assert\Email(message="Veuillez renseigner un email valide")
-     */
-    private $email;
+	/**
+	 * @ORM\Column(type="string", length=100)
+	 */
+	private $password;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min=8, minMessage="Votre mot de passe doit faire au moins 8 caractères !")
-     */
-    private $password;
+	/**
+	 * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user")
+	 */
+	private $comments;
 
-    /**
-     * @Assert\EqualTo(propertyPath="password", message="La confirmation et le mot de passe ne correspondent pas !")
-     */
-    private $passwordConfirm;
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 * @Assert\Email(
+	 *     message = "L'email '{{ value }}' ne respecte pas le format d'un email"
+	 * )
+	 */
+	private $email;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
+	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	private $actif;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Trick", mappedBy="user", orphanRemoval=true)
-     */
-    private $tricks;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user", orphanRemoval=true)
-     */
-    private $comments;
-
-   /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $reset_token;
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $activated;
-
-    /**
-     * @Assert\Image(
-     *  mimeTypes= {"image/jpeg", "image/jpg", "image/png"},
-     *  mimeTypesMessage = "Le fichier ne possède pas une extension valide ! Veuillez insérer une image en .jpg, .jpeg ou .png",
-     *  minWidth = 24,
-     *  minWidthMessage = "La largeur de cette image est trop petite",
-     *  maxWidth = 2000,
-     *  maxWidthMessage = "La largeur de cette image est trop grande",
-     *  minHeight = 24,
-     *  minHeightMessage = "La hauteur de cette image est trop petite",
-     *  maxHeight = 2000,
-     *  maxHeightMessage ="La hauteur de cette image est trop grande",
-     *  minRatio = 1,
-     *  minRatioMessage = "L'image doit être carré c-à-d un ratio de 1:1",
-     *  maxRatio = 1,
-     *  maxRatioMessage = "L'image doit être carré c-à-d un ratio de 1:1"
-     *  )
-     */
-    private $file;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $imagePath;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $imageName;
-
-     /**
-     * @var array
-     *
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
-
-    /**
+	/**
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
 	private $token;
 
-    public function __construct()
-    {
-        $this->tricks = new ArrayCollection();
-        $this->comments = new ArrayCollection();
-        $this->createdAt = new \DateTime();
-    }
+	public function __construct()
+	{
+		$this->comments = new ArrayCollection();
+	}
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+	public function __toString()
+	{
+		return $this->username;
+	}
 
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
+	public function getId(): ?int
+	{
+		return $this->id;
+	}
 
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
+	public function getUsername(): ?string
+	{
+		return $this->username;
+	}
 
-        return $this;
-    }
+	public function setUsername(string $username): self
+	{
+		$this->username = $username;
 
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
+		return $this;
+	}
 
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
+	public function getPassword(): ?string
+	{
+		return $this->password;
+	}
 
-        return $this;
-    }
+	public function setPassword(string $password): self
+	{
+		$this->password = $password;
 
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
+		return $this;
+	}
 
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
+	/**
+	 * @return Collection|Comment[]
+	 */
+	public function getComments(): Collection
+	{
+		return $this->comments;
+	}
 
-        return $this;
-    }
+	public function addComment(Comment $comment): self
+	{
+		if (!$this->comments->contains($comment)) {
+			$this->comments[] = $comment;
+			$comment->setUser($this);
+		}
 
-    public function getPasswordConfirm(): ?string
-    {
-        return $this->passwordConfirm;
-    }
+		return $this;
+	}
 
-    public function setPasswordConfirm(string $passwordConfirm): self
-    {
-        $this->passwordConfirm = $passwordConfirm;
+	public function removeComment(Comment $comment): self
+	{
+		if ($this->comments->contains($comment)) {
+			$this->comments->removeElement($comment);
+			// set the owning side to null (unless already changed)
+			if ($comment->getUser() === $this) {
+				$comment->setUser(null);
+			}
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
+	public function getEmail(): ?string
+	{
+		return $this->email;
+	}
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
+	public function setEmail(string $email): self
+	{
+		$this->email = $email;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * @return Collection|Trick[]
-     */
-    public function getTricks(): Collection
-    {
-        return $this->tricks;
-    }
+	/**
+	 * Returns the roles granted to the user.
+	 *
+	 *     public function getRoles()
+	 *     {
+	 *         return array('ROLE_USER');
+	 *     }
+	 *
+	 * Alternatively, the roles might be stored on a ``roles`` property,
+	 * and populated in any number of different ways when the user object
+	 * is created.
+	 *
+	 * @return (Role|string)[] The user roles
+	 */
+	public function getRoles()
+	{
+		return ['ROLE_ADMIN'];
+	}
 
-    public function addTrick(Trick $trick): self
-    {
-        if (!$this->tricks->contains($trick)) {
-            $this->tricks[] = $trick;
-            $trick->setUser($this);
-        }
+	/**
+	 * Returns the salt that was originally used to encode the password.
+	 *
+	 * This can return null if the password was not encoded using a salt.
+	 *
+	 * @return string|null The salt
+	 */
+	public function getSalt()
+	{
+		return null;
+	}
 
-        return $this;
-    }
+	/**
+	 * Removes sensitive data from the user.
+	 *
+	 * This is important if, at any given point, sensitive information like
+	 * the plain-text password is stored on this object.
+	 */
+	public function eraseCredentials()
+	{
+	}
 
-    public function removeTrick(Trick $trick): self
-    {
-        if ($this->tricks->contains($trick)) {
-            $this->tricks->removeElement($trick);
-            // set the owning side to null (unless already changed)
-            if ($trick->getUser() === $this) {
-                $trick->setUser(null);
-            }
-        }
+	/**
+	 * String representation of object
+	 * @link https://php.net/manual/en/serializable.serialize.php
+	 * @return string the string representation of the object or null
+	 * @since 5.1.0
+	 */
+	public function serialize()
+	{
+		return serialize([
+			$this->id,
+			$this->username,
+			$this->email,
+			$this->password
+		]);
+	}
 
-        return $this;
-    }
+	/**
+	 * Constructs the object
+	 * @link https://php.net/manual/en/serializable.unserialize.php
+	 * @param string $serialized <p>
+	 * The string representation of the object.
+	 * </p>
+	 * @return void
+	 * @since 5.1.0
+	 */
+	public function unserialize($serialized)
+	{
+		list(
+			$this->id,
+			$this->username,
+			$this->email,
+			$this->password
+		) = unserialize($serialized, ['allowed_classes' => false]);
+	}
 
-    /**
-     * @return Collection|Comment[]
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
+	public function getActif(): ?bool
+	{
+		return $this->actif;
+	}
 
-    public function addComment(Comment $comment): self
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments[] = $comment;
-            $comment->setUser($this);
-        }
+	public function setActif(bool $actif): self
+	{
+		$this->actif = $actif;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function removeComment(Comment $comment): self
-    {
-        if ($this->comments->contains($comment)) {
-            $this->comments->removeElement($comment);
-            // set the owning side to null (unless already changed)
-            if ($comment->getUser() === $this) {
-                $comment->setUser(null);
-            }
-        }
+	public function getToken(): ?string
+	{
+		return $this->token;
+	}
 
-        return $this;
-    }
+	public function setToken(?string $token): self
+	{
+		$this->token = $token;
 
-    public function getRoles() {
-        $roles = $this->roles;
-        
-        if (empty($roles)) {
-            $roles[] = 'ROLE_USER';
-        }
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): void
-    {
-        $this->roles = $roles;
-    }
-
-    public function getsalt() {
-        return null;
-    }
-
-    public function eraseCredentials() {}
-
-    
-    public function getActivated(): ?bool
-    {
-        return $this->activated;
-    }
-    
-    public function setActivated(bool $activated): self
-    {
-        $this->activated = $activated;
-        
-        return $this;
-    }
-    
-    public function getFile()
-    {
-        return $this->file;
-    }
-    
-    public function setFile(UploadedFile $file): self
-    {
-        $this->file = $file;
-        
-        return $this;
-    }
-    
-    public function getImagePath(): ?string
-    {
-        return $this->imagePath;
-    }
-    
-    public function setImagePath(string $imagePath): self
-    {
-        $this->imagePath = $imagePath;
-        
-        return $this;
-    }
-    
-    public function getImageName(): ?string
-    {
-        return $this->imageName;
-    }
-    
-    public function setImageName(string $imageName): self
-    {
-        $this->imageName = $imageName;
-        
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function serialize(): string
-    {
-        return serialize([$this->id, $this->username, $this->password]);
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function unserialize($serialized): void
-    {
-        [$this->id, $this->username, $this->password] = unserialize($serialized, ['allowed_classes' => false]);
-    }
-    
-    public function getResetToken(): ?string
-    {
-        return $this->reset_token;
-    }
-    
-    public function setResetToken(?string $reset_token): self
-    {
-        $this->reset_token = $reset_token;
-        
-        return $this;
-    }
-    public function getToken(): ?string
-    {
-        return $this->token;
-    }
-
-    
-    public function setToken(string $token): self
-    {
-        $this->token = $token;
-    
-        return $this;
-    }
-    
-    public function __toString()
-    {
-        return $this->username;
-    }
+		return $this;
+	}
 }

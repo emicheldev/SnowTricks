@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,49 +10,50 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Video
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+	/**
+	 * @ORM\Id()
+	 * @ORM\GeneratedValue()
+	 * @ORM\Column(type="integer")
+	 */
+	private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $url;
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 * @Assert\Regex("/<iframe ?.*>(.*)<\/iframe>/")
+	 */
+	private $url;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Trick", inversedBy="videos")
-     */
-    private $trick;
+	/**
+	 * @ORM\ManyToOne(targetEntity="App\Entity\Figure", inversedBy="videos")
+	 */
+	private $figure;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+	public function getId(): ?int
+	{
+		return $this->id;
+	}
 
-    public function getUrl(): ?string
-    {
-        return $this->url;
-    }
+	public function getUrl(): ?string
+	{
+		return $this->url;
+	}
 
-    public function setUrl(string $url): self
-    {
-        $this->url = $url;
+	public function setUrl(string $url): self
+	{
+		$this->url = $url;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getTrick(): ?Trick
-    {
-        return $this->trick;
-    }
+	public function getFigure(): ?Figure
+	{
+		return $this->figure;
+	}
 
-    public function setTrick(?Trick $trick): self
-    {
-        $this->trick = $trick;
+	public function setFigure(?Figure $figure): self
+	{
+		$this->figure = $figure;
 
-        return $this;
-    }
+		return $this;
+	}
 }

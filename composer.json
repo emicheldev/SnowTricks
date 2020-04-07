@@ -16,6 +16,7 @@
         "symfony/mailer": "5.0.*",
         "symfony/orm-pack": "^1.0",
         "symfony/security-bundle": "5.0.*",
+        "symfony/serializer": "5.0.*",
         "symfony/string": "5.0.*",
         "symfony/twig-pack": "^1.0",
         "symfony/validator": "5.0.*",
