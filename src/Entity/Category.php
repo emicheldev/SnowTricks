@@ -4,80 +4,77 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ * @UniqueEntity("name")
  */
 class Category
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+	/**
+	 * @ORM\Id()
+	 * @ORM\GeneratedValue()
+	 * @ORM\Column(type="integer")
+	 */
+	private $id;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $name;
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 */
+	private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Trick", mappedBy="category")
-     */
-    private $tricks;
+	/**
+	 * @ORM\ManyToMany(targetEntity="App\Entity\Figure", mappedBy="categories")
+	 */
+	private $figure;
 
-    public function __construct()
-    {
-        $this->tricks = new ArrayCollection();
-    }
+	public function __construct()
+	{
+		$this->figure = new ArrayCollection();
+	}
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+	public function getId(): ?int
+	{
+		return $this->id;
+	}
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
+	public function getName(): ?string
+	{
+		return $this->name;
+	}
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+	public function setName(string $name): self
+	{
+		$this->name = $name;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * @return Collection|Trick[]
-     */
-    public function getTricks(): Collection
-    {
-        return $this->tricks;
-    }
+	/**
+	 * @return Collection|Figure[]
+	 */
+	public function getFigure(): Collection
+	{
+		return $this->figure;
+	}
 
-    public function addTrick(Trick $trick): self
-    {
-        if (!$this->tricks->contains($trick)) {
-            $this->tricks[] = $trick;
-            $trick->setCategory($this);
-        }
+	public function addFigure(Figure $figure): self
+	{
+		if (!$this->figure->contains($figure)) {
+			$this->figure[] = $figure;
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function removeTrick(Trick $trick): self
-    {
-        if ($this->tricks->contains($trick)) {
-            $this->tricks->removeElement($trick);
-            // set the owning side to null (unless already changed)
-            if ($trick->getCategory() === $this) {
-                $trick->setCategory(null);
-            }
-        }
+	public function removeFigure(Figure $figure): self
+	{
+		if ($this->figure->contains($figure)) {
+			$this->figure->removeElement($figure);
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 }

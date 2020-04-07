@@ -2,27 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\Comment;
+use App\Entity\Video;
 use App\Form\LabelType;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
-class CommentFormType extends LabelType
+class VideoType extends LabelType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-        ->add('content', TextareaType::class, $this->getOptions('Votre commentaire', 'Contenu de votre commentaire ...'))
-        ;
-
+        $url=$builder
+            ->add('url', UrlType::class, $this->getOptions("Vidéo", "Url de la vidéo"));
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Comment::class,
+            'data_class' => Video::class,
         ]);
     }
 }

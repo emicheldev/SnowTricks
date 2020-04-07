@@ -5,6 +5,7 @@
         "php": "^7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "cocur/slugify": "^4.0",
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/asset": "5.0.*",
         "symfony/console": "5.0.*",
@@ -15,10 +16,12 @@
         "symfony/mailer": "5.0.*",
         "symfony/orm-pack": "^1.0",
         "symfony/security-bundle": "5.0.*",
+        "symfony/serializer": "5.0.*",
         "symfony/string": "5.0.*",
         "symfony/twig-pack": "^1.0",
         "symfony/validator": "5.0.*",
-        "symfony/yaml": "5.0.*"
+        "symfony/yaml": "5.0.*",
+        "vich/uploader-bundle": "^1.13"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",
