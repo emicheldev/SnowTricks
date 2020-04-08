@@ -1,0 +1,16 @@
+<div class="comment">
+	<div class="thumbnail" style="background-image:url('{{asset('build/images/default-user.png')}}')"></div>
+	<div class="content">
+		<div class="infos">
+			<div class="author">
+				{{ comment.user.username }}
+			</div>
+			<div class="date">
+				{{ comment.createdAt|date("d/m/Y") }}
+			</div>
+		</div>
+		<div class="text-container">
+			{{ comment.content }}
+		</div>
+	</div>
+</div>

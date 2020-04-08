@@ -1,0 +1,31 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title 'Gérer les figures' %}
+{% block h1 figure.name %}
+{% block subtitle 'Snow Tricks' %}
+
+{% block body %}
+
+	{% include "partials/flash.html.twig" %}
+	<div class="figure-container col text-center container">
+		{{ include('admin/partials/_form_edit.html.twig', {button: 'Modifier'}) }}
+
+		<form id="removeFigure" method="post" action="{{ path('admin.figure.delete', {id: figure.id}) }}" style="display: inline-block" onsubmit="return confirm('Vous êtes sur le point de supprimer une figure. Êtes vous vraiment sûr ?')">
+			<input type="hidden" name="_method" value="DELETE">
+			<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ figure.id) }}">
+			<button class="btn btn-danger delete">
+				Supprimer
+			</button>
+		</form>
+		<form id="removeMainImg" method="post" action="{{ path('admin.figure.mainImg.delete', {'id': figure.id}) }}" onsubmit="return confirm('Vous êtes sur le point de supprimer l'image principale de la figure. Êtes vous vraiment sûr ?');">
+			<input type="hidden" name="_method" value="DELETE">
+			<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ figure.id) }}">
+			<button class="btn btn-link delete">
+				<i class="fa fa-trash" aria-hidden="true"></i>
+			</button>
+		</form>
+	</div>
+
+
+{% endblock %}
