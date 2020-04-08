@@ -1,3 +1,4 @@
+
 {% extends 'base.html.twig' %}
 
 {% block title "S'inscrire" %}
@@ -25,16 +26,16 @@
 				{{ form_row(form.email) }}
 			</div>
 		</div>
-		<div class="row"> 
+		<div class="row">
 			<div class="col">
 				{{ form_row(form.password) }}
 			</div>
 		</div>
 		<div class="actions">
-			<button class="border-lg bg-blue-200 m-3 ">
+			<button class="btn btn-primary">
 				{{ button|default('Créer mon compte') }}
 			</button>
-			<a href="{{ path('auth_login') }}">Vous avez déja un compte ?</a>
+			<a href="{{ path('login') }}">Vous avez déja un compte ?</a>
 		</div>
 		{{ form_end(form) }}
 	</div>
