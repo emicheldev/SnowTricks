@@ -1,0 +1,48 @@
+{{ form_start(form) }}
+
+<div class="actions">
+	<button class="btn btn-link edit">
+		<i class="fa fa-file-image-o" aria-hidden="true"></i>
+	</button>
+	<button class="btn btn-link delete">
+		<i class="fa fa-trash" aria-hidden="true"></i>
+	</button>
+</div>
+
+<div class="image" style="background-image: url({{ asset('build/images/empty.jpg') }});">
+	<h1>
+		Créer une nouvelle figure ci-dessous
+	</h1>
+</div>
+
+<div class="container mt-4 form-container">
+	<div class="row">
+		<div class="col">
+			{{ form_row(form.pictureFiles) }}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			{{ form_row(form.name) }}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			{{ form_row(form.description) }}
+		</div>
+	</div>
+	<div class="row">
+		<div class="categories">
+			{{ form_row(form.categories) }}
+			<a href="{{path('admin.category.new')}}">Ajouter une nouvelle catégorie</a>
+		</div>
+	</div>
+
+	{{ form_rest(form) }}
+	<div class="actions-form text-right">
+		<button class="btn btn-primary edit">
+			{{ button|default('Enregistrer') }}
+		</button>
+	</div>
+</div>
+{{ form_end(form) }}
