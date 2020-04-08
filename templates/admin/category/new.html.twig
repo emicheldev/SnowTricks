@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	New Category
+{% endblock %}
+
+{% block h1 'Gérer les figures' %}
+{% block subtitle 'Snow Tricks' %}
+
+
+{% block body %}
+	<h1>
+		Créer une nouvelle catégorie
+	</h1>
+
+	{{ include('admin/partials/category/_form.html.twig') }}
+
+	<a href="{{ path('admin.category.index') }}" class="btn btn-secondary">
+		Retour à la liste des catégories
+	</a>
+{% endblock %}
