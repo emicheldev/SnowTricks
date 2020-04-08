@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Gérer les figures' %}
+{% block h1 'Créer une nouvelle figure' %}
+{% block subtitle 'Snow Tricks' %}
+
+{% block body %}
+	<div class="row container">
+		<div class="col-md-6 col-xs-12">
+			<h1>Modifier une vidéo</h1>
+			{{ include('admin/partials/video/_form.html.twig', {'button_label': 'Modifier', 'link_figure': path('admin.figure.edit', {id: idFigure})}) }}
+		</div>
+		<div class="col-md-6 col-xs-12">
+
+			{{ include('admin/partials/video/_iframe.html.twig', {'iframe': video.url}) }}
+		</div>
+	</div>
+{% endblock %}
