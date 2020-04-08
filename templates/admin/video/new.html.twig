@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Gérer les figures' %}
+{% block h1 'Créer une nouvelle figure' %}
+{% block subtitle 'Snow Tricks' %}
+
+{% block body %}
+	<h1>Ajouter une vidéo</h1>
+
+	{{ include('admin/partial/video/_form.html.twig', {'link_figure': path('admin.figure.edit', {id: idFigure})}) }}
+{% endblock %}
