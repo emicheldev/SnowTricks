@@ -3,6 +3,9 @@ CDC.pdf
 deploy
 
 # Public image
+public/images/figures
+
+# Public image
 public/images/figures/*
 !public/images/fixtures/image-1.jpg
 !public/images/fixtures/image-2.jpg

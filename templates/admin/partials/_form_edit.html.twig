@@ -1,0 +1,95 @@
+{{ form_start(form) }}
+
+<div class="actions">
+	<div class="figure_mainImgFile">
+		<label for="figure_mainImgFile">
+			<i class="fa fa-file-image-o" aria-hidden="true"></i>
+		</label>
+		{{ form_row(form.mainImgFile) }}
+	</div>
+</div>
+
+{% if figure.pictures|length > 0 and (figure.mainImage is null or figure.mainImage is empty) %}
+	{% set mainImage = vich_uploader_asset(figure.pictures|last, 'imageFile') %}
+{% elseif (figure.mainImage is not null) %}
+	{% set mainImage = vich_uploader_asset(figure, 'mainImgFile') | imagine_filter('large') %}
+{% endif %}
+
+<div class="image" style="background-image: url({{ mainImage is defined and mainImage is not empty ? mainImage : asset('build/images/empty.jpg') }});">
+	<h1>
+		{{figure.name}}
+	</h1>
+</div>
+<a class="btn btn-primary media-mobile" data-toggle="collapse" href="#mediaCollapse" role="button" aria-expanded="false" aria-controls="mediaCollapse">
+	Voir les médias
+</a>
+<div class="collapse" id="mediaCollapse">
+	<div class="medias">
+		{% if figure.pictures|length > 0 %}
+			<div class="photos">
+				{% for picture in figure.pictures %}
+					<div class="photo miniature" style="background-image: url({{ vich_uploader_asset(picture, 'imageFile') | imagine_filter('thumb') }})">
+						<div class="actions">
+							<a class="edit" href="{{ path('admin.picture.edit', {id: picture.id, idFigure: figure.id}) }}">
+								<i class="fa fa-pencil" aria-hidden="true"></i>
+							</a>
+							<a class="btn btn-link delete" href="{{ path('admin.picture.delete', {id: picture.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ picture.id) }}" onclick="return confirm('Êtes vous sûr de vouloir supprimer cette photo ?');">
+								<i class="fa fa-trash" aria-hidden="true"></i>
+							</a>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+		<div class="videos">
+			{% for video in figure.videos %}
+				<div class="miniature">
+					{{ video.url|raw }}
+					<div class="actions">
+						<a class="edit" href="{{ path('admin.video.edit', {id: video.id, idFigure: figure.id}) }}">
+							<i class="fa fa-pencil" aria-hidden="true"></i>
+						</a>
+						<a class="btn btn-link delete" href="{{ path('admin.video.delete', {id: video.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ video.id) }}" onclick="return confirm('Êtes vous sûr de vouloir supprimer cette video ?');">
+							<i class="fa fa-trash" aria-hidden="true"></i>
+						</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+<div class="container mt-4 form-container">
+	<div class="row">
+		<div class="col-md-8">
+			{{ form_row(form.pictureFiles) }}
+		</div>
+		<div class="col-md-4">
+			<a class="btn btn-primary addVideo" href="{{ path("admin.video.new", { 'idFigure': figure.id }) }}">Ajouter une video</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			{{ form_row(form.name) }}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			{{ form_row(form.description) }}
+		</div>
+	</div>
+	<div class="row">
+		<div class="categories">
+			{{ form_row(form.categories) }}
+			<a href="{{path('admin.category.new')}}">Ajouter une nouvelle catégorie</a>
+		</div>
+	</div>
+
+	{{ form_rest(form) }}
+	<div class="actions-form text-right">
+		<button class="btn btn-primary edit">
+			{{ button|default('Enregistrer') }}
+		</button>
+	</div>
+</div>
+{{ form_end(form) }}

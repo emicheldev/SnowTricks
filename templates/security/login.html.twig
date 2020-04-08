@@ -1,39 +1,45 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Connexion{% endblock %}
+{% block title 'Se connecter' %}
 
 {% block body %}
-    <section class="container mt-5 mb-5">
-        <form method="post" class="mx-auto col-md-5">
+	<div class="container container-form mt-4 text-center">
+		<h1>
+			Se connecter
+		</h1>
+		{% if error %}
+			<div class="alert alert-danger">
+				{{ error.messageKey | trans(error.messagedata, 'security') }}
+			</div>
+		{% endif %}
 
+		<form action="{{ path('login') }}" method="post">
+			<div class="form-group">
+				<label for="username">
+					Nom d'utilisateur
+				</label>
+				<input type="text" id="username" name="_username" class="form-control">
+			</div>
 
-            {% if error %}
-                <div class="alert alert-danger mb-2">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
+			<div class="form-group">
+				<label for="password">
+					Mot de passe
+				</label>
+				<input type="password" id="password" name="_password" class="form-control">
+			</div>
 
-            {% if app.user %}
-                <div class="mx-auto mt-4 text-center checkbox mb-3 text-danger h3">Vous êtes déjà connecter {{ app.user.username }}, <a
-                            href="{{ path('auth_logout') }}" class="text-decoration-none btn btn-danger">Déconnexion ?</a></div>
-            {% endif %}
+			<div class="actions">
+				<a href="#" class="btn btn-link register">
+					S'inscrire
+				</a>
+				<a href="{{ path('forgot.password') }}" class="btn btn-link forgot-password">
+					Mot de passe oublié ?
+				</a>
+				<button type="submit" class="btn btn-primary">
+					Se connecter
+				</button>
+			</div>
 
-            <h1 class="mb-5 font-weight-normal text-center">Connexion</h1>
-            <label for="inputUsername" class="mt-2">Username</label>
-            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control"
-                   placeholder="Username" required autofocus>
-            <label for="inputPassword" class="mt-2">Password</label>
-            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password"
-                   required>
-
-            <input type="hidden" name="_csrf_token"
-                   value="{{ csrf_token('authenticate') }}"
-            >
-
-            <button class="btn btn-dark mt-5" type="submit">Connexion</button>
-
-        </form>
-
-        <div class="mx-auto mt-4 col-md-5 text-center">
-            <a href="{{ path('forgot_password') }}">Mot de passe oublié ?</a>
-        </div>
-    </section>
+		</form>
+	</div>
 {% endblock %}
