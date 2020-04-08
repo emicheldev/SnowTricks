@@ -29,9 +29,9 @@ class PictureController extends AbstractController
 	}
 
 	/**
-	 * @Route("/new", name="admin.picture.new", methods={"GET","POST"})
+	 * @Route("/create", name="admin.picture.create", methods={"GET","POST"})
 	 */
-	public function new(Request $request): Response
+	public function create(Request $request): Response
 	{
 		$picture = new Picture();
 		$form = $this->createForm(PictureType::class, $picture);
@@ -47,7 +47,7 @@ class PictureController extends AbstractController
 			return $this->redirectToRoute('home');
 		}
 
-		return $this->render('admin/picture/new.html.twig', [
+		return $this->render('admin/picture/create.html.twig', [
 			'picture' => $picture,
 			'form' => $form->createView(),
 		]);
