@@ -6,8 +6,7 @@ use App\Entity\User;
 use App\Entity\Image;
 use App\Entity\Figure;
 use App\Entity\Comment;
-use App\Form\TrickType;
-use App\Form\CommentFormType;
+use App\Form\CommentType;
 use Doctrine\ORM\EntityManager;
 use App\Services\PicturesUploader;
 use App\Repository\FigureRepository;
@@ -18,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
