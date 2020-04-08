@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Gérer les figures' %}
+{% block h1 'test' %}
+{% block subtitle 'Snow Tricks' %}
+
+
+{% block body %}
+
+	{{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary" >{{ button_label|default('Save') }}</button>
+        <a href="{{ link_figure }}" >Retour à la figure</a>
+    {{ form_end(form) }}
+
+{% endblock %}

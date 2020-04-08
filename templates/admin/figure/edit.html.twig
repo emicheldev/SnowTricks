@@ -9,7 +9,7 @@
 
 	{% include "partials/flash.html.twig" %}
 	<div class="figure-container col text-center container">
-		{{ include('admin/partials/_form_edit.html.twig', {button: 'Modifier'}) }}
+		{{ include('admin/partials/figure/_form_edit.html.twig', {button: 'Modifier'}) }}
 
 		<form id="removeFigure" method="post" action="{{ path('admin.figure.delete', {id: figure.id}) }}" style="display: inline-block" onsubmit="return confirm('Vous êtes sur le point de supprimer une figure. Êtes vous vraiment sûr ?')">
 			<input type="hidden" name="_method" value="DELETE">
