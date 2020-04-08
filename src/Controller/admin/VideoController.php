@@ -3,7 +3,7 @@
 namespace App\Controller\admin;
 
 use App\Entity\Video;
-use App\Entity\Figures;
+use App\Entity\Figure;
 use App\Form\VideoType;
 use App\Repository\VideoRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +25,7 @@ class VideoController extends AbstractController
 		$params = $request->attributes->get('_route_params');
 		$idFigure = $params['idFigure'];
 		$figure = $this->getDoctrine()
-			->getRepository(Figures::class)
+			->getRepository(Figure::class)
 			->find($idFigure);
 
 		$video = new Video();
