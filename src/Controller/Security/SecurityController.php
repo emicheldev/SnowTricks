@@ -5,15 +5,18 @@ namespace App\Controller\Security;
 use App\Entity\User;
 use Twig\Environment;
 use App\Form\UserType;
+use App\Services\SendMail;
 use App\Repository\UserRepository;
 use App\Form\ForgotPasswordUserType;
-use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 
 class SecurityController extends AbstractController
 {
@@ -36,9 +39,10 @@ class SecurityController extends AbstractController
 	/**
 	 * Undocumented variable
 	 *
-	 * @var \Swift_Mailer
+	 * @var MailerInterface 
 	 */
 	private $mailer;
+
 
 	/**
 	 * Undocumented variable
@@ -48,12 +52,12 @@ class SecurityController extends AbstractController
 	private $renderer;
 
 
-	public function __construct(UserRepository $repository, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer, Environment $renderer)
+	public function __construct(UserRepository $repository, EntityManagerInterface $em, MailerInterface $mailer, UserPasswordEncoderInterface $encoder, Environment $renderer)
 	{
+		$this->mailer = $mailer;
 		$this->repository = $repository;
 		$this->em = $em;
 		$this->encoder = $encoder;
-		$this->mailer = $mailer;
 		$this->renderer = $renderer;
 	}
 
@@ -64,9 +68,6 @@ class SecurityController extends AbstractController
 	{
 		$error = $authenticationUtils->getLastAuthenticationError();
 		$lastUsername = $authenticationUtils->getLastUsername();
-
-		//dd($authenticationUtils);
-
 
 		return $this->render('security/login.html.twig', [
 			'error' => $error,
@@ -93,19 +94,15 @@ class SecurityController extends AbstractController
 			$this->em->persist($user);
 			$this->em->flush();
 			$this->addFlash('success', 'Votre inscription a été acceptée. Vous avez reçu un mail de confirmation à l\'adresse que vous nous avez indiqué.');
-
+			
 			// envoi mail
-			$message = (new \Swift_Message('Bienvenue ' . $user->getUsername() . ' ! Veuillez confirmer votre adresse mail.'))
-				->setFrom('no-reply@snow-tricks.com')
-				->setTo($user->getEmail())
-				->setBody($this->renderer->render('emails/confirmation.html.twig', [
-					'user' => $user,
-				]), 'text/html');
+			$SendMail= new SendMail($this->mailer, $user->getEmail(), 'Merci pour votre inscription', 'emails/confirmation.html.twig',$user);
 
-			$this->mailer->send($message);
+			$SendMail->sendNotification();
+		
 
 			return $this->redirectToRoute('home');
-		}
+			}
 
 		return $this->render('security/register.html.twig', [
 			'current_menu' => 'register',
@@ -144,6 +141,11 @@ class SecurityController extends AbstractController
 					->setBody($this->renderer->render('emails/reset-password.html.twig', [
 						'user' => $userExist,
 					]), 'text/html');
+
+						// envoi mail
+				$SendMail= new SendMail($this->mailer, $userExist->getEmail(), 'Réinitialisation de votre mot de passe', 'emails/reset-password.html.twig',$user);
+
+				$SendMail->sendNotification();
 
 				$this->mailer->send($message);
 			}
