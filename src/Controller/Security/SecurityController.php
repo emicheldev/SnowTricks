@@ -129,25 +129,17 @@ class SecurityController extends AbstractController
 
 			$userExist = isset($userExist[0]) ? $userExist[0] : false;
 
+
 			if ($userExist) {
 				$userExist->setToken($token);
 				$this->em->persist($userExist);
 				$this->em->flush();
 
-				// envoi mail
-				$message = (new \Swift_Message('Réinitialisation de votre mot de passe'))
-					->setFrom('no-reply@snow-tricks.com')
-					->setTo($userExist->getEmail())
-					->setBody($this->renderer->render('emails/reset-password.html.twig', [
-						'user' => $userExist,
-					]), 'text/html');
-
-						// envoi mail
-				$SendMail= new SendMail($this->mailer, $userExist->getEmail(), 'Réinitialisation de votre mot de passe', 'emails/reset-password.html.twig',$user);
+			    // envoi mail
+				$SendMail= new SendMail($this->mailer, $userExist->getEmail(), 'Réinitialisation de votre mot de passe', 'emails/reset-password.html.twig', $userExist);
 
 				$SendMail->sendNotification();
 
-				$this->mailer->send($message);
 			}
 
 			$this->addFlash('success', 'Si votre email est bien associé à un compte, vous avez reçu un mail vous invitant à réinitialiser votre mot de passe');
