@@ -1,15 +1,17 @@
 <div class="comment">
-	<div class="thumbnail" style="background-image:url('{{asset('build/images/default-user.png')}}')"></div>
-	<div class="content">
-		<div class="infos">
+	<div class="flex flex-row my-5 w-full md:w-2/3 mx-auto">
+		<div class="">
 			<div class="author">
+
+				<img src="{{ asset('build/images/default-user.png') }}" class="rounded-full w-8 h-8" alt="comment.user.username">
+
 				{{ comment.user.username }}
 			</div>
-			<div class="date">
+		</div>
+		<div class="text-container ml-5 mt-2">
+			<div class="date text-xs">
 				{{ comment.createdAt|date("d/m/Y") }}
 			</div>
-		</div>
-		<div class="text-container">
 			{{ comment.content }}
 		</div>
 	</div>
