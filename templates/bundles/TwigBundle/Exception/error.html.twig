@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="center-align">
+            <h1 class="font-coiny bordered-text responsive-header">Oups, something went wrong</h1>
+            <p>
+                Wow, somthing went very wrong. Try refreshing the page or  <a href="{{ path('home') }}">return to the homepage</a>.
+            </p>
+            <img src="{{ asset('images/error.jpg') }}" alt="Got lost" class="responsive-img z-depth-2">
+        </div>
+
+
+    </div>
+
+{% endblock %}
