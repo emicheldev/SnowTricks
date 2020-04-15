@@ -64,7 +64,6 @@ class FigureRepository extends ServiceEntityRepository
 		$nbGroups = round($total / 15);
 		$start = 0;
 		$intervals = [];
-
 		for ($i = 1; $i <= $nbGroups; $i++) {
 			$intervals[$i] = [
 				'start' => $start
