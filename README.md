@@ -1,5 +1,6 @@
 # SnowTricks comunity site
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/624b25551f9e4b0e80bfc3587fb752e5)](https://app.codacy.com/manual/emicheldev/SnowTricks?utm_source=github.com&utm_medium=referral&utm_content=emicheldev/SnowTricks&utm_campaign=Badge_Grade_Dashboard)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/emicheldev/SnowTricks/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/emicheldev/SnowTricks/?branch=develop)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/40bf276ce48122ba1375/maintainability)](https://codeclimate.com/github/emicheldev/SnowTricks/maintainability)
