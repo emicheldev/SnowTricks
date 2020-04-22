@@ -1,43 +1,34 @@
-<a href="{{ path('figure.show', { id: figure.id, slug: figure.slug }) }}" class="card mt-4 figure">
-	{% if figure.pictures|length > 0 and (figure.mainImage is null or figure.mainImage is empty) %}
-		{% if 'image-' in figure.pictures|last.filename %}
-			{% set mainImage = asset('build/images/' ~ figure.pictures|last.filename) %}
-		{% else %}
-			{% set mainImage = vich_uploader_asset(figure.pictures|last, 'imageFile') %}
-		{% endif %}
-	{% elseif figure.mainImage is not null %}
-		{% if 'image-' in figure.mainImage %}
-			{% set mainImage = asset('build/images/' ~ figure.mainImage) %}
-		{% else %}
-			{% set mainImage = vich_uploader_asset(figure, 'mainImgFile') | imagine_filter('thumb') %}
-		{% endif %}
-	{% elseif figure.mainImage is null and 'image-' in figure.pictures|last.filename %}
-		{% set mainImage = asset('build/images/' ~ figure.pictures|last.filename) %}
-	{% endif %}
+    {% for figure  in figures %}
 
-	<div class="card-img-top" style="background-image: url({{ mainImage is defined and mainImage is not empty ? mainImage : asset('build/images/empty.jpg') }})"></div>
-	<div class="card-body">
-		<h5 class="card-title">
-			<p>
-				{{ figure.name }}
-			</p>
-		</h5>
-		{% if app.user %}
-			<div class="actions">
-				<form action="{{ path('admin.figure.edit', {id: figure.id}) }}" style="display: inline-block">
-					<button class="btn btn-link edit">
-						<i class="fa fa-pencil" aria-hidden="true"></i>
-					</button>
-				</form>
-				<form method="post" action="{{ path('admin.figure.delete', {id: figure.id}) }}" style="display: inline-block" onsubmit="return confirm('Vous êtes sur le point de supprimer une figure. Êtes vous vraiment sûr ?')">
-					<input type="hidden" name="_method" value="DELETE">
-					<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ figure.id) }}">
-					<button class="btn btn-link delete">
-						<i class="fa fa-trash" aria-hidden="true"></i>
-					</button>
-				</form>
-			</div>
-		{% endif %}
+                <div class="w-full md:w-1/3 xl:w-1/5 p-6 flex flex-col">
+                    <a href="{{ path('figure.show', {id: figure.id, slug: figure.slug}) }}">
+                        <img class="hover:grow hover:shadow-lg" src="{{ asset('build/images/' ~ figure.pictures|last.filename) }}" >
+                        <div class="pt-3 flex items-center justify-between">
+                            <p class="">{{figure.name}}</p>
 
-	</div>
-</a>
+                            {% if app.user %}
+                                <div class="inline-flex">
+                                   
+                                    <a href="{{ path('admin.figure.edit', {id: figure.id}) }}">
+                                        <svg class="h-4 w-4 fill-current text-gray-500 hover:text-blue-500" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8">
+                                            <path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                        </svg>
+                                    </a>
+
+                                    <form id="removeFigure" method="post" action="{{ path('admin.figure.delete', {id: figure.id}) }}" style="display: inline-block" onsubmit="return confirm('Vous êtes sur le point de supprimer une figure. Êtes vous vraiment sûr ?')">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ figure.id) }}">
+                                        <button class="btn btn-danger delete">
+                                             <svg class="h-4 w-4 fill-current text-gray-500 hover:text-red-500" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8">
+                                            <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                        </button>
+                                    </form>
+
+                                </div>
+                            {% endif %}
+
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
