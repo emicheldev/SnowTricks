@@ -1,5 +1,31 @@
-{{ form_start(form) }}
-{{ form_widget(form) }}
-<button class="btn btn-primary" style="margin-bottom: 10px">{{ button_label|default('Ajouter une vidéo') }}</button>
-<a href="{{ link_figure }}" class="btn btn-secondary" style="margin-bottom: 10px">Retour à la figure</a>
-{{ form_end(form) }}
+
+
+<div class="flex justify-center  ">
+	<div class="">
+		
+	<a href="{{ link_figure }}" class="text-green-500" style="margin-bottom: 10px">Retour à la figure</a>
+
+	{{ form_start(form, {'attr': {'class': 'bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'}}) }}
+
+	<div class="mb-4">
+				    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
+			        	Url de la Vidéo
+			      	</label>
+				      
+
+				      {{ form_widget(form.url, {'attr': {'class': 'block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'}}) }}
+
+				     
+				    </div>
+				    
+				    <div class="flex items-center justify-between">
+				      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+				       {{ button|default('Ajouter une vidéo') }}
+				      </button>
+				      
+	</div>
+
+	{{ form_end(form) }}
+	</div>
+
+</div>
