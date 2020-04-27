@@ -99,15 +99,17 @@ class VideoController extends AbstractController
 			$this->manager->remove($video);
 			$this->manager->flush();
 			$this->addFlash('success', 'La vidéo a bien été supprimée');
-		} else {
+
+			return $this->redirectToRoute('admin.figure.edit',[
+				'id' => $routeParams
+			]);
+		} 	
 			$this->addFlash('error', 'La vidéo n\'a pas été supprimée, un problème est survenu');
+			
 			return $this->redirectToRoute('admin.figure.edit', [
 			'idFigure' => $routeParams
 		]);
-		}
+		
 
-		return $this->redirectToRoute('admin.figure.edit',[
-			'id' => $routeParams
-		]);
 	}
 }

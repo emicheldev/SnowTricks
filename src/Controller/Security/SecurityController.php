@@ -18,6 +18,9 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
+/**
+ * SecurityController
+ */
 class SecurityController extends AbstractController
 {
 
@@ -29,7 +32,7 @@ class SecurityController extends AbstractController
 	/**
 	 * @var EntityManagerInterface
 	 */
-	private $em;
+	private $manager;
 
 	/**
 	 * @var UserPasswordEncoderInterface
@@ -52,17 +55,22 @@ class SecurityController extends AbstractController
 	private $renderer;
 
 
-	public function __construct(UserRepository $repository, EntityManagerInterface $em, MailerInterface $mailer, UserPasswordEncoderInterface $encoder, Environment $renderer)
+	public function __construct(UserRepository $repository, EntityManagerInterface $manager, MailerInterface $mailer, UserPasswordEncoderInterface $encoder, Environment $renderer)
 	{
 		$this->mailer = $mailer;
 		$this->repository = $repository;
-		$this->em = $em;
+		$this->manager = $manager;
 		$this->encoder = $encoder;
 		$this->renderer = $renderer;
 	}
 
 	/**
 	 * @Route("/login", name="login")
+	 * 
+	 * login
+	 *
+	 * @param  mixed $authenticationUtils
+	 * @return void
 	 */
 	public function login(AuthenticationUtils $authenticationUtils)
 	{
@@ -77,6 +85,11 @@ class SecurityController extends AbstractController
 
 	/**
 	 * @Route("/register", name="register")
+	 * 
+	 * register
+	 *
+	 * @param  mixed $request
+	 * @return void
 	 */
 	public function register(Request $request)
 	{
@@ -91,16 +104,15 @@ class SecurityController extends AbstractController
 			$user->setActif(0);
 			$user->setToken($token);
 
-			$this->em->persist($user);
-			$this->em->flush();
+			$this->manager->persist($user);
+			$this->manager->flush();
 			$this->addFlash('success', 'Votre inscription a été acceptée. Vous avez reçu un mail de confirmation à l\'adresse que vous nous avez indiqué.');
 			
 			// envoi mail
 			$SendMail= new SendMail($this->mailer, $user->getEmail(), 'Merci pour votre inscription', 'emails/confirmation.html.twig',$user);
 
 			$SendMail->sendNotification();
-		
-
+			
 			return $this->redirectToRoute('home');
 			}
 
@@ -112,6 +124,11 @@ class SecurityController extends AbstractController
 
 	/**
 	 * @Route("/forgot-password", name="forgot.password")
+	 * 
+	 * forgotPassword
+	 *
+	 * @param  mixed $request
+	 * @return void
 	 */
 	public function forgotPassword(Request $request)
 	{
@@ -132,8 +149,8 @@ class SecurityController extends AbstractController
 
 			if ($userExist) {
 				$userExist->setToken($token);
-				$this->em->persist($userExist);
-				$this->em->flush();
+				$this->manager->persist($userExist);
+				$this->manager->flush();
 
 			    // envoi mail
 				$SendMail= new SendMail($this->mailer, $userExist->getEmail(), 'Réinitialisation de votre mot de passe', 'emails/reset-password.html.twig', $userExist);

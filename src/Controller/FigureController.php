@@ -102,45 +102,6 @@ class FigureController extends AbstractController
 		]);
 	}
 
-	/**
-	 * @Route("/figure/{id}/commentaire/index/{index}", name="figure.commentaire.index")
-	 *
-	 * @return Response
-	 */
-	public function ajaxLoadItems(Request $request)
-	{
-		$params = $request->attributes->get('_route_params');
-		$index = (int) $params['index'];
-		$idFigure = $params['id'];
-		$nbGroups = round($this->commentRepository->countAll($idFigure) / 10);
-
-		if (is_int($index) && $index > 1) {
-			$moreComments = (array) $this->commentRepository->findMoreItems($index, $idFigure);
-			$htmlData = [];
-
-			if ($moreComments) {
-				foreach ($moreComments as $comment) {
-					$comment = $this->getDoctrine()
-						->getRepository(Comment::class)
-						->find($comment['id']);
-
-					array_push(
-						$htmlData,
-						$this->renderView('./comment.html.twig', [
-							'comment' => $comment,
-							'nbGroups' => $nbGroups,
-						])
-					);
-				}
-			}
-
-			return new JsonResponse([
-				'html' => $htmlData,
-			], 200);
-		}
-
-		return new JsonResponse(['error' => 'Une erreur est survenue'], 400);
-	}
 
 
 

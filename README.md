@@ -10,34 +10,34 @@
 
 To install, you need
 
--  composer from [https://getcomposer.org/](https://getcomposer.org/)
--  Yarn from [https://yarnpkg.com](https://yarnpkg.com/)
--  Files from github (or git clone [https://github.com/emicheldev/SnowTricks.git](https://github.com/emicheldev/SnowTricks.git))
--  Php version 7.2
--  Mysql 5.7 or mariadb 10.2.7
+-   composer from [https://getcomposer.org/](https://getcomposer.org/)
+-   Yarn from [https://yarnpkg.com](https://yarnpkg.com/)
+-   Files from github (or git clone [https://github.com/emicheldev/SnowTricks.git](https://github.com/emicheldev/SnowTricks.git))
+-   Php version 7.2
+-   Mysql 5.7 or mariadb 10.2.7
 
 ### Installation
 
--  Navigate to the repository where you copied the files
--  Copy the .env file to .env.local
--  Configure the .env.local file
--  Run ```composer install --no-dev --optimize-autoloader``` to download all the backend dependencies for production environment or ```composer install``` for dev environment
--  Run ```yarn install``` to download all the frontend dependencies
--  Verify that the var folder is writable by the webserver
--  Verify that the public/uploads folder is writable by the webserver
+-   Navigate to the repository where you copied the files
+-   Copy the .env file to .env.local
+-   Configure the .env.local file
+-   Run ```composer install --no-dev --optimize-autoloader``` to download all the backend dependencies for production environment or ```composer install``` for dev environment
+-   Run ```yarn install``` to download all the frontend dependencies
+-   Verify that the var folder is writable by the webserver
+-   Verify that the public/uploads folder is writable by the webserver
 
 ## Running the dev environment
 
--  Make sure you are in dev environment in the .env or the .env.local file.
--  Make sure your database is running and configured in the .env or .env.local files
--  Make sure you have all the dev dependencies by running composer install
--  Create the database with ```php bin/console d:d:c```
--  Apply the migrations with ```php bin/console d:m:m```
--  Load the demo fixtures with ```php bin/console d:f:l```
--  Compile the assets with ```yarn encore dev```
--  Start the symfony server with ```php bin/console server:run```
--  The default admin user is admin/admin
--  Multiple users created, all with the password &quot;user&quot;
+-   Make sure you are in dev environment in the .env or the .env.local file.
+-   Make sure your database is running and configured in the .env or .env.local files
+-   Make sure you have all the dev dependencies by running composer install
+-   Create the database with ```php bin/console d:d:c```
+-   Apply the migrations with ```php bin/console d:m:m```
+-   Load the demo fixtures with ```php bin/console d:f:l```
+-   Compile the assets with ```yarn encore dev```
+-   Start the symfony server with ```php bin/console server:run```
+-   The default admin user is admin/admin
+-   Multiple users created, all with the password &quot;user&quot;
 
 ## The .env file
 

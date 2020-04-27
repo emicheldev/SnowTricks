@@ -16,16 +16,16 @@ class UserValide extends AbstractController
 	/**
 	 * @var EntityManagerInterface
 	 */
-	private $em;
+	private $manager;
 
 	/**
 	 * @var UserPasswordEncoderInterface
 	 */
 	private $encoder;
 
-	public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $encoder)
+	public function __construct(EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
 	{
-		$this->em = $em;
+		$this->manager = $manager;
 		$this->encoder = $encoder;
 	}
 
@@ -44,16 +44,17 @@ class UserValide extends AbstractController
 		if ($user->getToken() === $token) {
 			$user->setToken(null);
 			$user->setActif(1);
-			$this->em->persist($user);
-			$this->em->flush();
+			$this->manager->persist($user);
+			$this->manager->flush();
 			$this->addFlash('success', 'Inscription confirmée');
 
 			return $this->redirectToRoute('home');
-		} else {
+		} 
+
 			$this->addFlash('error', 'Inscription non confirmée, un problème est survenu');
+
 			return $this->redirectToRoute('home');
-		}
-	}
+			}
 
 	/**
 	 * @Route("/reset-password/{id}/{token}", name="security.reset.user")
@@ -74,8 +75,8 @@ class UserValide extends AbstractController
 			if ($form->isSubmitted() && $form->isValid()) {
 				$user->setPassword($this->encoder->encodePassword($user, $user->getPassword()));
 				$user->setToken(null);
-				$this->em->persist($user);
-				$this->em->flush();
+				$this->manager->persist($user);
+				$this->manager->flush();
 
 				$this->addFlash('success', 'Votre mot de passe a bien été réinitialisé');
 				return $this->redirectToRoute('home');
@@ -85,9 +86,10 @@ class UserValide extends AbstractController
 				'current_menu' => 'register',
 				'form' => $form->createView(),
 			]);
-		} else {
+		} 
+
 			$this->addFlash('error', 'Le lien de réinitialisation du mot de passe a expiré, veuillez recommencer');
 			return $this->redirectToRoute('home');
-		}
+	
 	}
 }
