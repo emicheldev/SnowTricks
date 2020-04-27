@@ -120,11 +120,11 @@ class FigureController extends AbstractController
 			$this->manager->remove($figure);
 			$this->manager->flush();
 			$this->addFlash('success', 'La figure a bien été supprimée');
-		} else {
+
+			return $this->redirectToRoute('home');
+		} 
 			$this->addFlash('error', 'La figure n\'a pas été supprimée, un problème est survenu');
 			return $this->redirectToRoute('home');
-		}
-		return $this->redirectToRoute('home');
 	}
 
 	/**
@@ -144,10 +144,11 @@ class FigureController extends AbstractController
 			$figure->setUpdatedAt(new \DateTime());
 			$this->manager->flush();
 			$this->addFlash('success', 'L\'image principale de la figure a bien été supprimée');
-		} else {
-			$this->addFlash('error', 'La figure n\'a pas été supprimée, un problème est survenu');
+			
 			return $this->redirectToRoute('home');
-		}
-		return $this->redirectToRoute('home');
+		} 
+			$this->addFlash('error', 'La figure n\'a pas été supprimée, un problème est survenu');
+			
+			return $this->redirectToRoute('home');
 	}
 }
