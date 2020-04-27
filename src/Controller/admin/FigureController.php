@@ -14,6 +14,9 @@ use Laminas\EventManager\EventManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * FigureController
+ */
 class FigureController extends AbstractController
 {
 
@@ -25,16 +28,20 @@ class FigureController extends AbstractController
 	 * @var EntityManagerInterface
 	 * @var \Doctrine\ORM\EntityManager
 	 */
-	private $em;
+	private $manager;
 
-	public function __construct(FigureRepository $repository, EntityManagerInterface $em)
+	public function __construct(FigureRepository $repository, EntityManagerInterface $manager)
 	{
 		$this->repository = $repository;
-		$this->em = $em;
+		$this->manager = $manager;
 	}
 
 	/**
 	 * @Route("/admin/figure/create", name="admin.figure.new")
+	 * new
+	 *
+	 * @param  mixed $request
+	 * @return void
 	 */
 	public function new(Request $request)
 	{
@@ -47,8 +54,8 @@ class FigureController extends AbstractController
 			$figure->setCreatedAt($date);
 			$figure->setUpdatedAt($date);
 
-			$this->em->persist($figure);
-			$this->em->flush();
+			$this->manager->persist($figure);
+			$this->manager->flush();
 			$this->addFlash('success', 'La figure a bien été créée');
 			return $this->redirectToRoute('home');
 		}
@@ -68,6 +75,12 @@ class FigureController extends AbstractController
 	 * @param Figure $figure
 	 * @param Request $request
 	 * @return \Symfony\Component\HttpFoundation\Response
+	 * 
+	 * edit
+	 *
+	 * @param  mixed $figure
+	 * @param  mixed $request
+	 * @return void
 	 */
 	public function edit(Figure $figure, Request $request)
 	{
@@ -78,7 +91,7 @@ class FigureController extends AbstractController
 			$date = new \DateTime();
 			$figure->setUpdatedAt($date);
 
-			$this->em->flush();
+			$this->manager->flush();
 			$this->addFlash('success', 'La figure a bien été modifiée');
 			return $this->redirectToRoute('home');
 		}
@@ -94,12 +107,18 @@ class FigureController extends AbstractController
 	 * @Route("/admin/figure/{id}", name="admin.figure.delete", methods="DELETE")
 	 * @param Figure $figure
 	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
+	 * 
+	 * delete
+	 *
+	 * @param  mixed $figure
+	 * @param  mixed $request
+	 * @return void
 	 */
 	public function delete(Figure $figure, Request $request)
 	{
 		if ($this->isCsrfTokenValid('delete' . $figure->getId(), $request->get('_token'))) {
-			$this->em->remove($figure);
-			$this->em->flush();
+			$this->manager->remove($figure);
+			$this->manager->flush();
 			$this->addFlash('success', 'La figure a bien été supprimée');
 		} else {
 			$this->addFlash('error', 'La figure n\'a pas été supprimée, un problème est survenu');
@@ -112,13 +131,18 @@ class FigureController extends AbstractController
 	 * @Route("/admin/figure/mainImg/{id}", name="admin.figure.mainImg.delete", methods="DELETE")
 	 * @param Figure $figure
 	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
+	 * deleteMainImg
+	 *
+	 * @param  mixed $figure
+	 * @param  mixed $request
+	 * @return void
 	 */
 	public function deleteMainImg(Figure $figure, Request $request)
 	{
 		if ($this->isCsrfTokenValid('delete' . $figure->getId(), $request->get('_token'))) {
 			$figure->setMainImage(null);
 			$figure->setUpdatedAt(new \DateTime());
-			$this->em->flush();
+			$this->manager->flush();
 			$this->addFlash('success', 'L\'image principale de la figure a bien été supprimée');
 		} else {
 			$this->addFlash('error', 'La figure n\'a pas été supprimée, un problème est survenu');

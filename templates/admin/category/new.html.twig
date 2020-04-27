@@ -9,13 +9,17 @@
 
 
 {% block body %}
-	<h1>
-		Créer une nouvelle catégorie
-	</h1>
+	<div class="flex justify-center sm:my-10">
+		<div>
+			<h1 class="text-center font-bold text-2xl my-10">
+				Créer une nouvelle catégorie
+			</h1>
 
-	{{ include('admin/partials/category/_form.html.twig') }}
+			{{ include('admin/partials/category/_form.html.twig') }}
 
-	<a href="{{ path('admin.category.index') }}" class="btn btn-secondary">
-		Retour à la liste des catégories
-	</a>
+			<a href="{{ path('admin.category.index') }}" class="btn btn-secondary">
+				Retour à la liste des catégories
+			</a>
+		</div>
+	</div>
 {% endblock %}

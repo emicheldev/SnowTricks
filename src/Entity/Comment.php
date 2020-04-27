@@ -42,19 +42,35 @@ class Comment
     {
         return $this->id;
     }
-
+    
+    /**
+     * getContent
+     *
+     * @return string
+     */
     public function getContent(): ?string
     {
         return $this->content;
     }
-
+    
+    /**
+     * setContent
+     *
+     * @param  mixed $content
+     * @return self
+     */
     public function setContent(string $content): self
     {
         $this->content = $content;
 
         return $this;
     }
-
+    
+    /**
+     * getCreatedAt
+     *
+     * @return DateTimeInterface
+     */
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->created_at;
@@ -66,24 +82,46 @@ class Comment
 
         return $this;
     }
-
+    
+    /**
+     * getFigure
+     *
+     * @return Figure
+     */
     public function getFigure(): ?Figure
     {
         return $this->figure;
     }
-
+    
+    /**
+     * setFigure
+     *
+     * @param  mixed $figure
+     * @return self
+     */
     public function setFigure(?Figure $figure): self
     {
         $this->figure = $figure;
 
         return $this;
     }
-
+    
+    /**
+     * getUser
+     *
+     * @return User
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
-
+    
+    /**
+     * setUser
+     *
+     * @param  mixed $user
+     * @return self
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;

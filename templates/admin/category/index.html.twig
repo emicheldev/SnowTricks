@@ -4,52 +4,44 @@
 	Category index
 {% endblock %}
 
-{% block h1 'Gérer les figures' %}
-{% block subtitle 'Snow Tricks' %}
-
 
 {% block body %}
 	{% include "partials/flash.html.twig" %}
 
-	<h1 style="margin-bottom: 20px">
-		Toutes les catégories
-	</h1>
-
-	<table class="table">
-		<thead>
-			<tr>
-				<th>
-					Name
-				</th>
-				<th>
-					actions
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for category in categories %}
-				<tr>
-					<td>
-						{{ category.name }}
-					</td>
-					<td>
-						<div class="actions" style="display: flex; justify-content: flex-start; align-item: center">
-							<a href="{{ path('admin.category.edit', {'id': category.id}) }}" class="btn btn-primary" style="margin-right: 15px">
+	<div class="text-gray-900 bg-gray-100">
+    <div class="p-4 flex">
+        <h1 class="text-3xl">
+            Toutes les catégories
+        </h1>
+    </div>
+    <div class="px-3 py-4 flex justify-center">
+        <table class="w-full text-md bg-white shadow-md rounded mb-4">
+            <tbody>
+                <tr class="border-b">
+                    <th class="text-left p-3 px-5">Name</th>
+                    <th>Actions</th>
+                </tr>
+                {% for category in categories %}
+	                <tr class="border-b hover:bg-orange-100 bg-gray-100">
+	                    <td class="p-3 px-5"><span class="bg-transparent">{{ category.name }}</span></td>	                
+	                    <td class="p-3 px-5 flex justify-end">
+	                    	<button type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+	                    		<a href="{{ path('admin.category.edit', {'id': category.id}) }}" >
 								Modifier
-							</a>
-							{{ include('admin/partials/category/_delete_form.html.twig') }}
-						</div>
-					</td>
-				</tr>
-			{% else %}
-				<tr>
-					<td colspan="3">
-						Aucune catégorie trouvée
-					</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+								</a>
+							</button>
+	                    	<button type="button">
+	                    		{{ include('admin/partials/category/_delete_form.html.twig') }}
+	                    	</button>
+	                    </td>
+	                </tr>
+	            {% endfor %}
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
 	<a href="{{ path('admin.category.new') }}" class="btn btn-primary">
 		Créer une nouvelle catégorie

@@ -6,6 +6,7 @@ use App\Entity\Video;
 use App\Entity\Figure;
 use App\Form\VideoType;
 use App\Repository\VideoRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,6 +18,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class VideoController extends AbstractController
 {
+	/**
+	 * @var EntityManagerInterface
+	 */
+	private $manager;
+
+	public function __construct(EntityManagerInterface $manager)
+	{
+		$this->manager = $manager;
+	}
+
 	/**
 	 * @Route("/{idFigure}/new", name="admin.video.new", methods={"GET","POST"})
 	 */
@@ -76,19 +87,27 @@ class VideoController extends AbstractController
 	}
 
 	/**
-	 * @Route("/{id}", name="admin.video.delete", methods={"DELETE"})
+	 * @Route("/{id}", name="admin.video.delete",  methods="DELETE")
+	 * @param Video $video
+	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
 	 */
 	public function delete(Request $request, Video $video): Response
 	{
-		$data = json_decode($request->getContent(), true);
+		$routeParams = $request->query->get('idFigure');
 
-		if ($this->isCsrfTokenValid('delete' . $video->getId(), $data['_token'])) {
-			$entityManager = $this->getDoctrine()->getManager();
-			$entityManager->remove($video);
-			$entityManager->flush();
-			return new JsonResponse(['success' => 1]);
+		if ($this->isCsrfTokenValid('delete' . $video->getId(), $request->get('_token'))) {
+			$this->manager->remove($video);
+			$this->manager->flush();
+			$this->addFlash('success', 'La vidéo a bien été supprimée');
+		} else {
+			$this->addFlash('error', 'La vidéo n\'a pas été supprimée, un problème est survenu');
+			return $this->redirectToRoute('admin.figure.edit', [
+			'idFigure' => $routeParams
+		]);
 		}
 
-		return new JsonResponse(['error' => 'Une erreur est survenue'], 400);
+		return $this->redirectToRoute('admin.figure.edit',[
+			'id' => $routeParams
+		]);
 	}
 }

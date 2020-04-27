@@ -1,84 +1,72 @@
+<div class="md:mx-24 ">
 
-{{ form_start(form, {'attr': {'class': 'w-full mx-5'}}) }}
+	<h1 class="text-blue-500 font-bold text-center text-4xl">Modifier l'article : {{figure.name}} </h1>
 
-<div class="actions">
-	<div class="figure_mainImgFile">
-		<label for="figure_mainImgFile">
-			<i class="fa fa-file-image-o" aria-hidden="true"></i>
-		</label>
-		{{ form_row(form.mainImgFile) }}
-	</div>
-</div>
-
-
-{% if figure.pictures|length > 0 and (figure.mainImage is null or figure.mainImage is empty) %}
-	{% set mainImage = vich_uploader_asset(figure.pictures|last, 'imageFile') %}
-{% elseif (figure.mainImage is not null) %}
-	{% set mainImage = vich_uploader_asset(figure, 'mainImgFile') | imagine_filter('large') %}
-{% endif %}
-
-<div class="h-24 w-full bg-cover" style="background-image: url({{ mainImage is defined and mainImage is not empty ? mainImage : asset('build/images/empty.jpg') }});">
-	<h1>
-		{{figure.name}}
-	</h1>
-</div>
-
-<a class="text-center font-medium">
-	Voir les médias
-</a>
-<div class="collapse" id="mediaCollapse">
-	<div class="medias flex flex-wrap mt-10 mb-16">
-		{% if figure.pictures|length > 0 %}
-				{% for picture in figure.pictures %}
-					<div class="photo w-full h-40  md:w-1/3 xl:w-1/6 p-6 flex flex-col" style="background-image: url({{ vich_uploader_asset(picture, 'imageFile') | imagine_filter('thumb') }})">
-						<div class="flex items-center ">
-							<a class="edit" href="{{ path('admin.picture.edit', {id: picture.id, idFigure: figure.id}) }}">
-								<svg class="h-4 w-4 fill-current text-gray-500 hover:text-blue-500 mt-3" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8">
-									<path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-								</svg>
-							</a>
-							<a class="btn btn-link delete" href="{{ path('admin.picture.delete', {id: picture.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ picture.id) }}" onclick="return confirm('Êtes vous sûr de vouloir supprimer cette photo ?');">
-								<svg class="h-4 w-4 fill-current text-gray-500 hover:text-red-500" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8">
-									<path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-								</svg>
-							</a>
-						</div>
-					</div>
-				{% endfor %}
+	{% if figure.pictures|length > 0 and (figure.mainImage is null or figure.mainImage is empty) %}
+	{% if 'image-' in figure.pictures|last.filename %}
+		{% set mainImage = asset('build/images/' ~ figure.pictures|last.filename) %}
+	{% else %}
+		{% set mainImage = vich_uploader_asset(figure.pictures|last, 'imageFile') %}
+	{% endif %}
+	{% elseif (figure.mainImage is not null) %}
+		{% if 'image-' in figure.mainImage %}
+			{% set mainImage = asset('build/images/' ~ figure.mainImage) %}
+		{% else %}
+			{% set mainImage = vich_uploader_asset(figure, 'mainImgFile') | imagine_filter('large') %}
 		{% endif %}
+	{% elseif figure.mainImage is null and 'image-' in figure.pictures|last.filename %}
+		{% set mainImage = asset('build/images/' ~ figure.pictures|last.filename) %}
+	{% endif %}
 
-			{% for video in figure.videos %}
-				<div class="video w-full h-40 md:w-1/3 xl:w-1/6 p-6 flex flex-col">
-					{{ video.url|raw }}
-					<div class="flex items-center ">
-						<a class="edit" href="{{ path('admin.video.edit', {id: video.id, idFigure: figure.id}) }}">
-							<svg class="h-4 w-4 fill-current text-gray-500 hover:text-blue-500 mt-3" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8">
-									<path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-								</svg>
-						</a>
-						<a class="btn btn-link delete" href="{{ path('admin.video.delete', {id: video.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ video.id) }}" onclick="return confirm('Êtes vous sûr de vouloir supprimer cette video ?');">
-							<svg class="h-4 w-4 fill-current text-gray-500 hover:text-red-500" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8">
-									<path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-								</svg>
-						</a>
-					</div>
-				</div>
-			{% endfor %}
+	<div class="flex justify-center">
+		<div class="h-64 w-64 bg-cover bg-center rounded " style="background-image: url({{ mainImage is defined and mainImage is not empty ? mainImage : asset('build/images/empty.jpg') }});">
+			
+		</div> 
+
 	</div>
+
+
+{{ form_start(form, {'attr': {'class': 'w-full '}}) }}
+
+<div class="flex w-full h-64 items-center justify-center bg-grey-lighter">
+    <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue-500 rounded-lg shadow-lg tracking-wide uppercase border border-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white">
+        <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+        </svg>
+        <span class="mt-2 text-base leading-normal">Select a file</span>
+        	{{ form_row(form.mainImgFile, {'attr': {'class': 'hidden'}}) }}
+
+        <input type='file' class="hidden" />
+    </label>
 </div>
+
+
+
 <div class="container mt-4 form-container">
 	<div class="row">
-		<div class="col-md-8">
-			{{ form_row(form.pictureFiles) }}
+	
+		<div class="flex w-full h-64 items-center justify-center bg-grey-lighter">
+		    <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue-500 rounded-lg shadow-lg tracking-wide uppercase border border-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white">
+		        <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+		            <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+		        </svg>
+		        <span class="mt-2 text-base leading-normal">Select a file</span>
+		        	{{ form_row(form.pictureFiles, {'attr': {'class': 'hidden'}}) }}
+
+		        <input type='file' class="hidden" />
+		    </label>
 		</div>
-		<div class="col-md-4">
-			<a class="btn btn-primary addVideo" href="{{ path("admin.video.new", { 'idFigure': figure.id }) }}">Ajouter une video</a>
+
+		<div class="my-6">
+			<a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded addVideo " href="{{ path("admin.video.new", { 'idFigure': figure.id }) }}">Ajouter une video</a>
 		</div>
+
+
 	</div>
 
 	<div class="flex flex-wrap -mx-3 mb-">
 		<div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-			{{ form_label(form.name, 'Nom', {'label_attr': {'class': 'block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'}}) }}
+			{{ form_label(form.name, 'Titre', {'label_attr': {'class': 'block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'}}) }}
 
 			{{ form_widget(form.name, {'attr': {'class': 'appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white'}}) }}
 		</div>
@@ -86,8 +74,8 @@
 			<label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
 	        	Catégories
 	      	</label>
-			{{ form_widget(form.categories, {'attr': {'class': 'block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'}}) }}
-			<a href="{{path('admin.category.new')}}">Ajouter une nouvelle catégorie</a>
+			{{ form_widget(form.categories, {'attr': {'class': 'block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 mb-6 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'}}) }}
+			<a href="{{path('admin.category.new')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ">Ajouter une nouvelle catégorie</a>
 		</div>
 	</div>
 
@@ -109,3 +97,67 @@
 	</div>
 </div>
 {{ form_end(form) }}
+
+
+<a class="text-center font-medium">
+	Voir les médias
+</a>
+<div class="collapse" id="mediaCollapse">
+	<div class="medias flex flex-wrap mt-10 mb-16">
+		{% if figure.pictures|length > 0 %}
+				{% for picture in figure.pictures %}
+					{% if 'image-' in picture.filename %}
+						{% set url = asset('build/images/' ~ picture.filename) %}
+					{% else %}
+						{% set url = vich_uploader_asset(picture, 'imageFile') | imagine_filter('thumb') %}
+					{% endif %}
+					<div class="photo w-full h-40 md:w-1/3 xl:w-1/6 m-6 flex flex-col bg-cover bg-center" style="background-image:  url({{ url }})">
+						<div class="flex items-center ">
+							<a class="edit" href="{{ path('admin.picture.edit', {id: picture.id, idFigure: figure.id}) }}">
+								<svg class="h-4 w-4 fill-current text-gray-500 hover:text-blue-500 mt-3" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8">
+									<path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+								</svg>
+							</a>
+					
+					
+							<form id="removeFigure" method="post" action="{{ path('admin.picture.delete', {id: picture.id, idFigure: figure.id}) }}" style="display: inline-block" onsubmit="return confirm('Vous êtes sur le point de supprimer une picture. Êtes vous vraiment sûr ?')">
+	                            <input type="hidden" name="_method" value="DELETE">
+	                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ picture.id) }}">
+	                            <button class="btn btn-danger delete">
+	                                 <svg class="h-4 w-4 fill-current text-gray-500 hover:text-red-500" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8">
+	                                <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+	                            </svg>
+	                            </button>
+	                        </form>
+					    
+						</div>
+					</div>
+				{% endfor %}
+		{% endif %}
+
+			{% for video in figure.videos %}
+				<div class="video w-full h-40 md:w-1/3 xl:w-1/6 p-6 flex flex-col">
+					{{ video.url|raw }}
+					<div class="flex items-center ">
+						<a class="edit" href="{{ path('admin.video.edit', {id: video.id, idFigure: figure.id}) }}">
+							<svg class="h-4 w-4 fill-current text-gray-500 hover:text-blue-500 mt-3" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8">
+									<path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+								</svg>
+						</a>
+	
+						<form id="removeFigure" method="post" action="{{ path('admin.video.delete', {id: video.id, idFigure: figure.id}) }}" style="display: inline-block" onsubmit="return confirm('Vous êtes sur le point de supprimer une video. Êtes vous vraiment sûr ?')">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ video.id) }}">
+                            <button class="btn btn-danger delete">
+                                 <svg class="h-4 w-4 fill-current text-gray-500 hover:text-red-500" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8">
+                                <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                            </button>
+                        </form>
+					</div>
+				</div>
+			{% endfor %}
+	</div>
+</div>
+
+</div>

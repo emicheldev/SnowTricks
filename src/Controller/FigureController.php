@@ -38,13 +38,13 @@ class FigureController extends AbstractController
 	/**
 	 * @var EntityManagerInterface
 	 */
-	private $em;
+	private $manager;
 
-	public function __construct(CommentRepository $commentRepository, FigureRepository $figureRepository, EntityManagerInterface $em)
+	public function __construct(CommentRepository $commentRepository, FigureRepository $figureRepository, EntityManagerInterface $manager)
 	{
 		$this->commentRepository = $commentRepository;
 		$this->figureRepository = $figureRepository;
-		$this->em = $em;
+		$this->manager = $manager;
 	}
 
 	/**
@@ -69,8 +69,8 @@ class FigureController extends AbstractController
 				$comment->setFigure($figure);
 				$comment->setUser($user);
 
-				$this->em->persist($comment);
-				$this->em->flush();
+				$this->manager->persist($comment);
+				$this->manager->flush();
 				$this->addFlash('success', 'Le commentaire a bien été rajouté');
 
 				return $this->redirectToRoute('figure.show', [
