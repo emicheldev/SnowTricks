@@ -21,11 +21,11 @@ class PictureController extends AbstractController
 	/**
 	 * @var EntityManagerInterface
 	 */
-	private $em;
+	private $manager;
 
-	public function __construct(EntityManagerInterface $em)
+	public function __construct(EntityManagerInterface $manager)
 	{
-		$this->em = $em;
+		$this->manager = $manager;
 	}
 
 	/**
@@ -70,7 +70,7 @@ class PictureController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid()) {
 			$picture->setUpdatedAt(new \DateTime());
 			$picture->setImageFile($form->get('imageFile')->getData());
-			$this->em->flush();
+			$this->manager->flush();
 			$this->addFlash('success', 'L\'image a bien été modifiée');
 			return $this->redirectToRoute('home');
 		}
@@ -93,8 +93,8 @@ class PictureController extends AbstractController
 		$routeParams = $request->query->get('idFigure');
 
 		if ($this->isCsrfTokenValid('delete' . $picture->getId(), $request->get('_token'))) {
-			$this->em->remove($picture);
-			$this->em->flush();
+			$this->manager->remove($picture);
+			$this->manager->flush();
 			$this->addFlash('success', 'La picture a bien été supprimée');
 		} else {
 			$this->addFlash('error', 'La picture n\'a pas été supprimée, un problème est survenu');

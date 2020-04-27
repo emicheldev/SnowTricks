@@ -34,17 +34,33 @@ class Category
 	{
 		$this->figure = new ArrayCollection();
 	}
-
+	
+	/**
+	 * getId
+	 *
+	 * @return int
+	 */
 	public function getId(): ?int
 	{
 		return $this->id;
 	}
-
+	
+	/**
+	 * getName
+	 *
+	 * @return string
+	 */
 	public function getName(): ?string
 	{
 		return $this->name;
 	}
-
+	
+	/**
+	 * setName
+	 *
+	 * @param  mixed $name
+	 * @return self
+	 */
 	public function setName(string $name): self
 	{
 		$this->name = $name;
@@ -59,7 +75,13 @@ class Category
 	{
 		return $this->figure;
 	}
-
+	
+	/**
+	 * addFigure
+	 *
+	 * @param  mixed $figure
+	 * @return self
+	 */
 	public function addFigure(Figure $figure): self
 	{
 		if (!$this->figure->contains($figure)) {
@@ -68,7 +90,13 @@ class Category
 
 		return $this;
 	}
-
+	
+	/**
+	 * removeFigure
+	 *
+	 * @param  mixed $figure
+	 * @return self
+	 */
 	public function removeFigure(Figure $figure): self
 	{
 		if ($this->figure->contains($figure)) {

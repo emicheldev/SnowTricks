@@ -202,6 +202,10 @@ class Figure
 
 	/**
 	 * @return Collection|Category[]
+	 * 
+	 * getCategories
+	 *
+	 * @return Collection
 	 */
 	public function getCategories(): Collection
 	{
@@ -253,7 +257,13 @@ class Figure
 
 		return $this;
 	}
-
+	
+	/**
+	 * removePicture
+	 *
+	 * @param  mixed $picture
+	 * @return self
+	 */
 	public function removePicture(Picture $picture): self
 	{
 		if ($this->pictures->contains($picture)) {
@@ -289,12 +299,23 @@ class Figure
 		$this->pictureFiles = $pictureFiles;
 		return $this;
 	}
-
+	
+	/**
+	 * getMainImage
+	 *
+	 * @return string
+	 */
 	public function getMainImage(): ?string
 	{
 		return $this->main_image;
 	}
-
+	
+	/**
+	 * setMainImage
+	 *
+	 * @param  mixed $main_image
+	 * @return self
+	 */
 	public function setMainImage(?string $main_image): self
 	{
 		$this->main_image = $main_image;
@@ -333,7 +354,13 @@ class Figure
 	{
 		return $this->videos;
 	}
-
+	
+	/**
+	 * addVideo
+	 *
+	 * @param  mixed $video
+	 * @return self
+	 */
 	public function addVideo(Video $video): self
 	{
 		if (!$this->videos->contains($video)) {
@@ -343,7 +370,13 @@ class Figure
 
 		return $this;
 	}
-
+	
+	/**
+	 * removeVideo
+	 *
+	 * @param  mixed $video
+	 * @return self
+	 */
 	public function removeVideo(Video $video): self
 	{
 		if ($this->videos->contains($video)) {

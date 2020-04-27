@@ -21,11 +21,11 @@ class VideoController extends AbstractController
 	/**
 	 * @var EntityManagerInterface
 	 */
-	private $em;
+	private $manager;
 
-	public function __construct(EntityManagerInterface $em)
+	public function __construct(EntityManagerInterface $manager)
 	{
-		$this->em = $em;
+		$this->manager = $manager;
 	}
 
 	/**
@@ -96,8 +96,8 @@ class VideoController extends AbstractController
 		$routeParams = $request->query->get('idFigure');
 
 		if ($this->isCsrfTokenValid('delete' . $video->getId(), $request->get('_token'))) {
-			$this->em->remove($video);
-			$this->em->flush();
+			$this->manager->remove($video);
+			$this->manager->flush();
 			$this->addFlash('success', 'La vidéo a bien été supprimée');
 		} else {
 			$this->addFlash('error', 'La vidéo n\'a pas été supprimée, un problème est survenu');
