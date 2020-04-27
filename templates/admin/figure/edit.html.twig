@@ -9,7 +9,8 @@
 
 	{% include "partials/flash.html.twig" %}
 
-	<div class="figure-container col text-center container">
+	<div class="figure-container col text-center container" id="edit_figure">
+
 		{{ include('admin/partials/figure/_form_edit.html.twig', {button: 'Modifier'}) }}
 
 		<div class="inline-flex my-10  ">

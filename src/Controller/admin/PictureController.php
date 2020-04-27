@@ -84,19 +84,26 @@ class PictureController extends AbstractController
 	}
 
 	/**
-	 * @Route("/{id}", name="admin.picture.delete", methods={"DELETE"})
+	 * @Route("/{id}", name="admin.picture.delete",  methods="DELETE")
+	 * @param Picture $picture
+	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
 	 */
-	public function delete(Request $request, Picture $picture): Response
+	public function delete(Request $request, Picture $picture)
 	{
-		$data = json_decode($request->getContent(), true);
+		$routeParams = $request->query->get('idFigure');
 
-		if ($this->isCsrfTokenValid('delete' . $picture->getId(), $data['_token'])) {
-			$entityManager = $this->getDoctrine()->getManager();
-			$entityManager->remove($picture);
-			$entityManager->flush();
-			return new JsonResponse(['success' => 1]);
+		if ($this->isCsrfTokenValid('delete' . $picture->getId(), $request->get('_token'))) {
+			$this->em->remove($picture);
+			$this->em->flush();
+			$this->addFlash('success', 'La picture a bien été supprimée');
+		} else {
+			$this->addFlash('error', 'La picture n\'a pas été supprimée, un problème est survenu');
+			return $this->redirectToRoute('admin.figure.edit', [
+			'idFigure' => $routeParams
+		]);
 		}
-
-		return new JsonResponse(['error' => 'Une erreur est survenue'], 400);
+		return $this->redirectToRoute('admin.figure.edit',[
+			'id' => $routeParams
+		]);
 	}
 }

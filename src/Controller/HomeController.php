@@ -96,7 +96,7 @@ class HomeController extends AbstractController
      * @param int $start
      * @return Response
      */
-    public function loadMoreTricks($start = 5)
+    public function loadMoreFigures($start = 5)
     {
         $figures = $this->figureRepository->findBy([], ['created_at' => 'DESC'], 5, $start);
 
