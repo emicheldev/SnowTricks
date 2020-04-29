@@ -143,7 +143,7 @@ Alternatively if you want to just have a single hero
 
        
             <input type="hidden" value="{{ nbGroups }}" id="limit" >
-                <div id="list"></div>
+                <div id="list" class="flex flex-row flex-wrap"></div>
             {% for figure  in figures %}
 
                 	{% if figure.pictures|length > 0 and (figure.mainImage is null or figure.mainImage is empty) %}
