@@ -15,7 +15,8 @@
                     <ul class="md:flex items-center justify-between text-base text-gray-700 pt-4 md:pt-0">
                         <li>
                             <a class="inline-block no-underline hover:text-black hover:underline py-2 px-4" href="{{path('home') }} ">
-                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-6 h-6 text-gray-600"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                                <img class="hover:grow w-8 " src="{{ asset('build/images/logo.png') }}" >
+
                             </a>
                         </li>
                     </ul>
@@ -25,22 +26,28 @@
            
             <div class="order-2 md:order-3 flex items-center" id="nav-content">
 
-                <a class="inline-block no-underline hover:text-black hover:underline py-2 px-4" href="#">Tricks</a>
-                <a class="inline-block no-underline hover:text-black" href="{{ path('register') }}">
-                    <svg class="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <circle fill="none" cx="12" cy="7" r="3" />
-                        <path d="M12 2C9.243 2 7 4.243 7 7s2.243 5 5 5 5-2.243 5-5S14.757 2 12 2zM12 10c-1.654 0-3-1.346-3-3s1.346-3 3-3 3 1.346 3 3S13.654 10 12 10zM21 21v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h2v-1c0-2.757 2.243-5 5-5h4c2.757 0 5 2.243 5 5v1H21z" />
-                    </svg>
-                </a>
+                <a class="inline-block no-underline hover:text-black hover:underline py-2 px-4" href="/">Accueil</a>
+                <a class="inline-block no-underline hover:text-black hover:underline py-2 px-4" href="/#figure">Figure</a>
+                {% if app.user %}
+						<a class="pl-3 inline-block no-underline hover:text-black" href="{{ path('logout') }}">
+							Se déconnecter
+						</a>
+				{% else %}
+                    <a class="inline-block no-underline hover:text-black" href="{{ path('register') }}">
+                        <svg class="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <circle fill="none" cx="12" cy="7" r="3" />
+                            <path d="M12 2C9.243 2 7 4.243 7 7s2.243 5 5 5 5-2.243 5-5S14.757 2 12 2zM12 10c-1.654 0-3-1.346-3-3s1.346-3 3-3 3 1.346 3 3S13.654 10 12 10zM21 21v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h2v-1c0-2.757 2.243-5 5-5h4c2.757 0 5 2.243 5 5v1H21z" />
+                        </svg>
+                    </a>
 
-                <a class="pl-3 inline-block no-underline hover:text-black" href="{{ path('login') }}">
-                    <svg  fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" 
-                        stroke-width="2" viewBox="0 0 24 24" class="w-6 h-6 "><path d="M8 11V7a4 4 0 118 
-                        0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z">
-                        </path>
-                    </svg>
-                </a>
-
+                    <a class="pl-3 inline-block no-underline hover:text-black" href="{{ path('login') }}">
+                        <svg  fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" 
+                            stroke-width="2" viewBox="0 0 24 24" class="w-6 h-6 "><path d="M8 11V7a4 4 0 118 
+                            0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </a>
+                {% endif %}
             </div>
         </div>
     </nav>

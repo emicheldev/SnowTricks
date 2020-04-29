@@ -1,16 +1,16 @@
 {
      "name": "emicheldev/SnowTricks",
-     "version": "0.8.0",
+     "version": "0.9.0",
      "type": "project",
      "description": "Website for snowtriks inc",
         "authors": [
          {
            "name": "Damien Valade",
-           "email": "emicheldev@dmail.com"         
+           "email": "emicheldev@gmail.com"         
          }
      ],
       "support": {
-           "email": "emicheldev@dmail.com",         
+           "email": "emicheldev@gmail.com",         
            "issues": "https://github.com/emicheldev/SnowTricks/issues"
       },
 
